@@ -1,22 +1,46 @@
-# Welcome to server-mutant
+# **Server Mutant API Documentation**
 
+Este proyecto proporciona una API para verificar secuencias de ADN y determinar si una persona es un mutante. La API también incluye funcionalidades de autenticación, registro de usuarios y estadísticas sobre los datos procesados.
 
-## steps to start the server
-    > npm i -s
-    > npm start
-    > npm run test
-    
-## steps to start the server by docker
-    > sudo docker-compose -f docker-compose.dev.yml up
+## **Iniciar el Servidor**
 
-## **1. Endpoint: Mutant**
-El endpoint de **/mutant** se utiliza para verificar si un conjunto de cadenas de ADN pertenece a un mutante.
+### Pasos para arrancar el servidor:
 
-### **POST /mutant**
+1. **Instalar dependencias:**
+   ```bash
+   npm install
+   ```
 
-Verifica si un ADN corresponde a un mutante. El ADN se envía en el cuerpo de la solicitud.
+2. **Iniciar el servidor:**
+   ```bash
+   npm start
+   ```
 
-#### **Request Body**:
+### Pasos para ejecutar las pruebas:
+
+```bash
+npm run test
+```
+
+### Pasos para iniciar el servidor usando Docker:
+
+```bash
+sudo docker-compose -f docker-compose.dev.yml up
+```
+
+---
+
+## **Endpoints de la API**
+
+### **1. Endpoint: Mutant**
+
+Verifica si un conjunto de ADN pertenece a un mutante.
+
+#### **POST /mutant**
+
+Este endpoint recibe una secuencia de ADN y verifica si corresponde a un mutante.
+
+##### **Cuerpo de la solicitud:**
 ```json
 {
   "dna": [
@@ -30,9 +54,9 @@ Verifica si un ADN corresponde a un mutante. El ADN se envía en el cuerpo de la
 }
 ```
 
-#### **Response**:
+##### **Respuestas:**
+
 - **Status**: `200 OK`
-- **Body**:
   ```json
   {
     "message": "Es un mutante"
@@ -40,72 +64,70 @@ Verifica si un ADN corresponde a un mutante. El ADN se envía en el cuerpo de la
   ```
 
 - **Status**: `403 Forbidden`
-- **Body**:
   ```json
   {
     "message": "No es un mutante"
   }
   ```
 
-#### **Descripción**:
-Este endpoint recibe una matriz de cadenas de ADN y verifica si hay una secuencia mutante. Si encuentra una, devuelve un mensaje indicando que la persona es un mutante. Si no encuentra una secuencia mutante, devuelve un mensaje indicando que no lo es.
+#### **Descripción:**
+Este endpoint verifica si una secuencia de ADN contiene una combinación mutante. Si se encuentra una secuencia mutante, devuelve el mensaje correspondiente.
 
 ---
 
-## **2. Endpoint: Auth (Autenticación y Registro)**
+### **2. Endpoint: Auth (Autenticación y Registro)**
 
-Los endpoints de **Auth** se usan para realizar el registro de un nuevo usuario (signup) y el inicio de sesión (login).
+Los endpoints de **Auth** permiten el registro de nuevos usuarios (signup) y el inicio de sesión (login).
 
-### **POST /signup**
+#### **POST /signup**
 
 Registra un nuevo usuario en el sistema.
 
-#### **Request Body**:
+##### **Cuerpo de la solicitud:**
 ```json
 {
-  "email": "user@example.com",
-  "password": "strongpassword"
+  "email": "ale@gmail.com",
+  "password": "admin"
 }
 ```
 
-#### **Response**:
+##### **Respuestas:**
+
 - **Status**: `201 Created`
-- **Body**:
   ```json
   {
     "message": "Signup successful",
     "user": {
-      "email": "user@example.com"
+      "email": "ale@gmail.com"
     }
   }
   ```
 
 - **Status**: `500 Internal Server Error`
-- **Body**:
   ```json
   {
     "message": "Error en el registro"
   }
   ```
 
-#### **Descripción**:
-Este endpoint crea un nuevo usuario.
+#### **Descripción:**
+Este endpoint crea un nuevo usuario en la base de datos.
 
-### **POST /login**
+#### **POST /login**
 
-Permite iniciar sesión en el sistema. Devuelve un token JWT si las credenciales son correctas.
+Inicia sesión y obtiene un token JWT.
 
-#### **Request Body**:
+##### **Cuerpo de la solicitud:**
 ```json
 {
-  "email": "user@example.com",
-  "password": "strongpassword"
+  "email": "ale@gmail.com",
+  "password": "admin"
 }
 ```
 
-#### **Response**:
+##### **Respuestas:**
+
 - **Status**: `200 OK`
-- **Body**:
   ```json
   {
     "message": "Login successful",
@@ -114,28 +136,28 @@ Permite iniciar sesión en el sistema. Devuelve un token JWT si las credenciales
   ```
 
 - **Status**: `401 Unauthorized`
-- **Body**:
   ```json
   {
     "error": "Invalid request!"
   }
   ```
 
-#### **Descripción**:
-Este endpoint valida las credenciales del usuario. Si el login es exitoso, genera y devuelve un **token JWT**. Si las credenciales son incorrectas, devuelve un error de autorización.
+#### **Descripción:**
+Este endpoint valida las credenciales del usuario. Si las credenciales son correctas, devuelve un token JWT que puede ser utilizado para autenticar futuras solicitudes.
 
 ---
 
-## **3. Endpoint: Stats**
-El endpoint de **/stats** se utiliza para obtener estadísticas sobre el número de mutantes y no mutantes procesados.
+### **3. Endpoint: Stats**
 
-### **GET /stats**
+Obtiene estadísticas sobre los mutantes procesados.
 
-Obtiene estadísticas de la base de datos sobre cuántos mutantes y no mutantes se han procesado.
+#### **GET /stats**
 
-#### **Response**:
+Este endpoint devuelve estadísticas sobre los datos de ADN procesados, incluyendo el número de mutantes y no mutantes.
+
+##### **Respuestas:**
+
 - **Status**: `200 OK`
-- **Body**:
   ```json
   {
     "count_mutant_dna": 5,
@@ -144,55 +166,101 @@ Obtiene estadísticas de la base de datos sobre cuántos mutantes y no mutantes 
   }
   ```
 
-#### **Descripción**:
-Este endpoint devuelve las estadísticas de la base de datos:
-- **count_mutant_dna**: Número total de secuencias de ADN mutante procesadas.
-- **count_human_dna**: Número total de secuencias de ADN humanas procesadas.
-- **ratio**: La razón de ADN mutante frente a ADN humano.
+#### **Descripción:**
+Devuelve el número total de secuencias de ADN mutante y humana procesadas, junto con la razón (ratio) de mutantes sobre humanos.
 
 ---
 
-# **Autenticación con JWT**
-Para los endpoints de **Auth**, se utiliza **JWT (JSON Web Token)**. Los usuarios deben iniciar sesión con sus credenciales y, si son válidas, recibirán un token que se utilizará para autenticarse en los endpoints protegidos.
+### **4. Endpoint: Eliminar Todos los Datos de ADN**
+
+Este endpoint permite eliminar todas las secuencias de ADN almacenadas en la base de datos.
+
+#### **DELETE /delete-all-dna**
+
+Elimina todos los datos de ADN registrados en la base de datos.
+
+##### **Respuestas:**
+
+- **Status**: `200 OK`
+  ```json
+  {
+    "message": "Se eliminaron los Dna"
+  }
+  ```
+
+- **Status**: `401 Unauthorized`
+  ```json
+  {
+    "error": "Token inválido o no autorizado"
+  }
+  ```
+
+#### **Descripción:**
+Este endpoint elimina todas las secuencias de ADN mutante y humana registradas en la base de datos. Es un endpoint protegido, por lo que requiere autenticación con un token JWT válido.
+
+---
+
+## **Autenticación con JWT**
+
+Los endpoints de **Auth** utilizan **JWT (JSON Web Token)** para autenticar a los usuarios.
 
 ### **Incluir el Token en las Solicitudes**
-Cuando se realiza una solicitud a un endpoint protegido (por ejemplo, `/mutant` o `/stats`), el token debe incluirse en la cabecera de la solicitud:
+
+Cuando realices una solicitud a un endpoint protegido (por ejemplo, `/mutant`, `/stats` o `/delete-all-dna`), asegúrate de incluir el token JWT en el encabezado de la solicitud de la siguiente manera:
 
 ```bash
-Authorization: Bearer <your_token_here>
+Authorization: Bearer <token>
 ```
 
-Este token se obtiene al hacer login y se usa para acceder a los endpoints protegidos.
+Este token se obtiene después de iniciar sesión exitosamente.
 
 ---
 
-### peticiones con  `curl`**
+## **Peticiones con `curl`**
 
-1. **Registro (Signup)**:
+A continuación se presentan ejemplos de cómo realizar peticiones utilizando **curl**.
+
+1. **Registro de Usuario (Signup):**
    ```bash
    curl -X POST http://localhost:4000/signup \
    -H "Content-Type: application/json" \
-   -d '{"email": "user@gmail.com", "password": "121232"}'
+   -d '{"email": "ale@gmail.com", "password": "admin"}'
    ```
 
-2. **Login**:
+2. **Login:**
    ```bash
    curl -X POST http://localhost:4000/login \
    -H "Content-Type: application/json" \
-   -d '{"email": "user@gmail.com", "password": "121232"}'
+   -d '{"email": "ale@gmail.com", "password": "admin"}'
    ```
 
-3. **Verificación Mutante (POST /mutant)**:
+3. **Verificación de Mutante (POST /mutant):**
    ```bash
    curl -X POST http://localhost:4000/mutant \
    -H "Content-Type: application/json" \
-   -H "Authorization: Bearer <token>" \
+   -H "Authorization: Bearer token" \
    -d '{"dna": ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"]}'
    ```
 
-4. **Obtener estadísticas (GET /stats)**:
+4. **Obtener Estadísticas (GET /stats):**
    ```bash
    curl -X GET http://localhost:4000/stats \
-   -H "Authorization: Bearer <token>"
+   -H "Authorization: Bearer token"
    ```
+
+5. **Eliminar Todos los Datos de ADN (DELETE /delete-all-dna):**
+   ```bash
+   curl -X DELETE http://localhost:4000/delete-all-dna \
+   -H "Authorization: Bearer token"
+   ```
+
+---
+
+### **Reemplazar la URL para Probar en Local:**
+Para las peticiones **curl** o al hacer pruebas en tu entorno local, usa `http://localhost:4000`.
+
+Ejemplo:
+```bash
+http://localhost:4000/signup
+```
 
