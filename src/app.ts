@@ -1,10 +1,15 @@
 import express from 'express';
 import { json } from 'body-parser';
-import routes from './routes'; 
-import connectDb from './config/db'; 
+import routes from './routes';
+import connectDb from './config/db';
 import authService from './services/authService';
 
 const app = express();
+
+
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
 
 connectDb();
 

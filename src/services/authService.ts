@@ -116,7 +116,6 @@ class AuthService implements Auth {
                     });
                 }
     
-                // Validamos la contraseña
                 const isValid = await isValidPassword(response.password, body?.password);
                 if (!isValid) {
                     return res.status(401).json({
@@ -124,18 +123,17 @@ class AuthService implements Auth {
                     });
                 }
     
-                // Generamos el JWT si las credenciales son correctas
-                const payload = {  // Supongamos que 'dni' es el identificador único
+                const payload = {  
                     email: response.email,
-                    iat: moment().unix(),  // Tiempo de emisión del token
-                    exp: moment().add(1000, "minutes").unix(), // Tiempo de expiración del token
+                    iat: moment().unix(), 
+                    exp: moment().add(60, "minutes").unix(), 
                 };
     
                 const token = jwt.sign(payload, SECRET_KEY);
     
                 return res.status(200).json({
                     message: "Login successful",
-                    token,  // El token generado se envía al cliente
+                    token,  
                 });
             })(req, res, next);
            

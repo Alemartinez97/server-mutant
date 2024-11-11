@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 export const isValidPassword = async function (hash: string, password: string): Promise<boolean> {
     try {
