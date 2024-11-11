@@ -25,7 +25,7 @@ npm run test
 ### Pasos para iniciar el servidor usando Docker:
 
 ```bash
-sudo docker-compose -f docker-compose.dev.yml up
+docker-compose up --build
 ```
 
 ---
