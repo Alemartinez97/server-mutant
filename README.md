@@ -263,4 +263,6 @@ Ejemplo:
 ```bash
 http://localhost:4000/signup
 ```
+### **Descomentar lineas de la 1 a la 22 del index.ts para probar la función isMutant:**
+
 
