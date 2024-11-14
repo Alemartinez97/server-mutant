@@ -222,21 +222,21 @@ A continuación se presentan ejemplos de cómo realizar peticiones utilizando **
 
 1. **Registro de Usuario (Signup):**
    ```bash
-   curl -X POST http://localhost:4000/signup \
+   curl -X POST https://server-mutant.onrender.com/signup \
    -H "Content-Type: application/json" \
    -d '{"email": "ale@gmail.com", "password": "admin"}'
    ```
 
 2. **Login:**
    ```bash
-   curl -X POST http://localhost:4000/login \
+   curl -X POST https://server-mutant.onrender.com/login \
    -H "Content-Type: application/json" \
    -d '{"email": "ale@gmail.com", "password": "admin"}'
    ```
 
 3. **Verificación de Mutante (POST /mutant):**
    ```bash
-   curl -X POST http://localhost:4000/mutant \
+   curl -X POST https://server-mutant.onrender.com/mutant \
    -H "Content-Type: application/json" \
    -H "Authorization: Bearer token" \
    -d '{"dna": ["ATGCGA", "CAGTGC", "TTATGT", "AGAAGG", "CCCCTA", "TCACTG"]}'
@@ -244,13 +244,13 @@ A continuación se presentan ejemplos de cómo realizar peticiones utilizando **
 
 4. **Obtener Estadísticas (GET /stats):**
    ```bash
-   curl -X GET http://localhost:4000/stats \
+   curl -X GET https://server-mutant.onrender.com/stats \
    -H "Authorization: Bearer token"
    ```
 
 5. **Eliminar Todos los Datos de ADN (DELETE /delete-all-dna):**
    ```bash
-   curl -X DELETE http://localhost:4000/delete-all-dna \
+   curl -X DELETE https://server-mutant.onrender.com/delete-all-dna \
    -H "Authorization: Bearer token"
    ```
 
